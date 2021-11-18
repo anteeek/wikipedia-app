@@ -40,6 +40,10 @@ export function WikipediaSearch() {
 const Container = styled.div`
   display: flex;
   gap: 4rem;
+
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const Header = styled.h1`
@@ -52,10 +56,14 @@ const HorizontalRule = styled.div`
 `;
 
 const ControlsRow = styled.div`
-  width: min(100%, 450px);
+  width: min(100%, 600px);
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
 `;
 
 const ResultsContainer = styled.ul`
@@ -68,6 +76,10 @@ const ResultsContainer = styled.ul`
   padding: 0;
 
   width: min(600px, 100%);
+
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
 `;
 
 const DEBOUNCE_THRESHOLD = 1500;

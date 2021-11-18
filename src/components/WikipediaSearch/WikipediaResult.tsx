@@ -4,9 +4,18 @@ import { IWikipediaResult } from "../../lib/wikipedia";
 
 export function WikipediaResult({ result }: { result: IWikipediaResult }) {
   return (
-    <Container>
+    <Container
+      onClick={() =>
+        window.open(
+          `https://en.wikipedia.org/?curid=${result.pageid}`,
+          "_blank"
+        )
+      }
+    >
       <Title>{result.title}</Title>
-      <Snippet dangerouslySetInnerHTML={{ __html: result.snippet }} />
+      <Snippet dangerouslySetInnerHTML={{ __html: result.snippet + "..." }} />
+
+      <ResultDate>{new Date(result.timestamp).toDateString()}</ResultDate>
     </Container>
   );
 }
@@ -18,6 +27,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  cursor: pointer;
+
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 const Title = styled.h5`
@@ -30,4 +45,8 @@ const Snippet = styled.article`
     background-color: yellow;
     color: black;
   }
+`;
+
+const ResultDate = styled.div`
+  font-weight: bold;
 `;
