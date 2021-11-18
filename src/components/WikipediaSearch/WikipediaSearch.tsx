@@ -96,25 +96,30 @@ function useWikipediaSearch(phrase: string) {
         JSON.stringify(currentResults)
       ) as IWikipediaResult[];
 
+      const phraseRegexp = new RegExp(`${phrase}`, "ig");
+
       for (const result of newResults) {
-        const titleHasPhrase = result.title.includes(phrase);
+        const titleHasPhrase = !!result.title.match(phraseRegexp);
 
         if (titleHasPhrase) {
           if (options.all) {
-            result.title = result.title.replaceAll(phrase, replaceWith);
+            result.title = result.title.replaceAll(phraseRegexp, replaceWith);
           } else {
-            result.title = result.title.replace(phrase, replaceWith);
+            result.title = result.title.replace(phraseRegexp, replaceWith);
             break;
           }
         }
 
-        const snippetHasPhrase = result.snippet.includes(phrase);
+        const snippetHasPhrase = !!result.snippet.match(phraseRegexp);
 
         if (snippetHasPhrase) {
           if (options.all) {
-            result.snippet = result.snippet.replaceAll(phrase, replaceWith);
+            result.snippet = result.snippet.replaceAll(
+              phraseRegexp,
+              replaceWith
+            );
           } else {
-            result.snippet = result.snippet.replace(phrase, replaceWith);
+            result.snippet = result.snippet.replace(phraseRegexp, replaceWith);
             break;
           }
         }
@@ -125,18 +130,21 @@ function useWikipediaSearch(phrase: string) {
   };
 
   const search = async (searchedPhrase: string) => {
+    if (!searchedPhrase) {
+      return [];
+    }
     setResults(await searchWikipedia(searchedPhrase, { limit: 10 }));
   };
 
   React.useEffect(() => {
     if (
-      phrase &&
+      !!phrase &&
       Date.now() - lastSearchDateRef.current >= DEBOUNCE_THRESHOLD
     ) {
       lastSearchDateRef.current = Date.now();
 
       search(phrase);
-    } else {
+    } else if (!!phrase) {
       awaitingPhraseRef.current = phrase;
       if (awaitingPhraseTimeoutRef.current) {
         clearTimeout(awaitingPhraseTimeoutRef.current);
