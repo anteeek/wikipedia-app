@@ -31,5 +31,5 @@ const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
 
-  width: min(100%, 450px);
+  width: 100%;
 `;

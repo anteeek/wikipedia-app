@@ -9,7 +9,6 @@ export async function searchWikipedia(
   )
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
       return result.query.search;
     });
 }
